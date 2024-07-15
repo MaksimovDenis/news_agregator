@@ -43,18 +43,14 @@ func NewAPI(opts *Opts) *API {
 
 	go api.StartParseUrl()
 
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./webapp"))))
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./webapp/index.html")
-	})
-
 	api.setupEndpoints()
 
 	return api
 }
 
 func (api *API) setupEndpoints() {
-	api.router.HandleFunc("/api/feeds/{limit}", api.Feeds).Methods("GET")
+	api.router.HandleFunc("/news/{limit}", api.Feeds).Methods(http.MethodGet, http.MethodOptions)
+	api.router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./cmd/webapp"))))
 }
 
 func (api *API) Serve() error {

@@ -5,8 +5,6 @@ import (
 	"io"
 	"net/http"
 	"skillfactory/news_agregator/internal/models"
-	"strings"
-	"time"
 
 	strip "github.com/grokify/html-strip-tags-go"
 	"github.com/rs/zerolog/log"
@@ -57,15 +55,16 @@ func Parse(url string) ([]models.Feeds, error) {
 		n.Content = item.Description
 		n.Content = strip.StripTags(n.Content)
 		n.Link = item.Link
+		n.PubDate = item.PubDate
 
-		item.PubDate = strings.ReplaceAll(item.PubDate, ",", "")
+		/*item.PubDate = strings.ReplaceAll(item.PubDate, ",", " ")
 		t, err := time.Parse("Mon 2 Jan 2006 15:04:05 -0700", item.PubDate)
 		if err != nil {
 			t, err = time.Parse("Mon 2 Jan 2006 15:04:05 GMT", item.PubDate)
 		}
 		if err == nil {
 			n.PubDate = int(t.Unix())
-		}
+		}*/
 		data = append(data, n)
 	}
 

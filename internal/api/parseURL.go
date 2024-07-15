@@ -16,7 +16,7 @@ type configRss struct {
 
 func (hdl *API) StartParseUrl() {
 
-	reader, err := os.ReadFile("./internal/config/configRSS.json")
+	reader, err := os.ReadFile("./cmd/config.json")
 	if err != nil {
 		hdl.l.Fatal().Err(err).Msg("failed to read config RSS")
 	}

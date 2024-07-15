@@ -9,10 +9,14 @@ import (
 )
 
 func (api *API) Feeds(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	limitStr := vars["limit"]
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	if r.Method == http.MethodOptions {
+		return
+	}
+	vars := mux.Vars(r)["limit"]
 
-	limit, err := strconv.Atoi(limitStr)
+	limit, err := strconv.Atoi(vars)
 	if err != nil {
 		http.Error(w, "Invalid limit parameter", http.StatusBadRequest)
 		return
@@ -28,7 +32,5 @@ func (api *API) Feeds(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(feeds)
 }
