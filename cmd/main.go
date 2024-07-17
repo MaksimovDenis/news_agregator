@@ -35,7 +35,7 @@ func main() {
 
 	dbLog := logger.With().Str("module", "repository").Logger()
 
-	db, err := repository.NewFeedsPostgres(ctx, cfg.PgConnString, dbLog)
+	db, err := repository.NewPostgres(ctx, cfg.PgConnString, dbLog)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to init database")
 	}

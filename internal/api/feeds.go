@@ -1,36 +1,33 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
-func (api *API) Feeds(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	if r.Method == http.MethodOptions {
-		return
-	}
-	vars := mux.Vars(r)["limit"]
+func (api *API) Feeds(ctx *gin.Context) {
+	limitStr := ctx.Param("limit")
 
-	limit, err := strconv.Atoi(vars)
+	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		http.Error(w, "Invalid limit parameter", http.StatusBadRequest)
+		newErrorResponse(ctx, http.StatusBadRequest, "Invalid limit parameter")
 		return
 	}
 
-	if limit == 0 {
+	if limit == 0 || limit < 0 {
 		limit = 10
 	}
 
 	feeds, err := api.repository.Feeds.Feeds(limit)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	json.NewEncoder(w).Encode(feeds)
+	ctx.Header("Content-Type", "application/json")
+	ctx.Header("Access-Control-Allow-Origin", "*")
+
+	ctx.JSON(http.StatusOK, feeds)
 }

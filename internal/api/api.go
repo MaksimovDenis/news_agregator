@@ -6,7 +6,7 @@ import (
 	"skillfactory/news_agregator/internal/repository"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 )
 
@@ -24,12 +24,12 @@ type Opts struct {
 type API struct {
 	l          zerolog.Logger
 	server     *http.Server
-	router     *mux.Router
+	router     *gin.Engine
 	repository *repository.Repository
 }
 
 func NewAPI(opts *Opts) *API {
-	router := mux.NewRouter()
+	router := gin.Default()
 
 	api := &API{
 		l: opts.Log,
@@ -49,8 +49,7 @@ func NewAPI(opts *Opts) *API {
 }
 
 func (api *API) setupEndpoints() {
-	api.router.HandleFunc("/news/{limit}", api.Feeds).Methods(http.MethodGet, http.MethodOptions)
-	api.router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./cmd/webapp"))))
+	api.router.GET("feeds/:limit", api.Feeds)
 }
 
 func (api *API) Serve() error {

@@ -57,14 +57,6 @@ func Parse(url string) ([]models.Feeds, error) {
 		n.Link = item.Link
 		n.PubDate = item.PubDate
 
-		/*item.PubDate = strings.ReplaceAll(item.PubDate, ",", " ")
-		t, err := time.Parse("Mon 2 Jan 2006 15:04:05 -0700", item.PubDate)
-		if err != nil {
-			t, err = time.Parse("Mon 2 Jan 2006 15:04:05 GMT", item.PubDate)
-		}
-		if err == nil {
-			n.PubDate = int(t.Unix())
-		}*/
 		data = append(data, n)
 	}
 

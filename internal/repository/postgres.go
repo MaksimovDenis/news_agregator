@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func NewFeedsPostgres(ctx context.Context, pgConnString string, log zerolog.Logger) (*pgxpool.Pool, error) {
+func NewPostgres(ctx context.Context, pgConnString string, log zerolog.Logger) (*pgxpool.Pool, error) {
 	db, err := pgxpool.Connect(ctx, pgConnString)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to init postgres connection")
