@@ -29,8 +29,6 @@ RUN apk add --no-cache libc6-compat
 # Копируем бинарный файл из предыдущего этапа
 COPY --from=compiling_stage /news_agregator .
 
-# Указываем точку входа
-ENTRYPOINT ["./news_agregator"]
+RUN chmod +x news_agregator
 
-# Открываем порт 8080
-EXPOSE 8080
+CMD ["./news_agregator"]

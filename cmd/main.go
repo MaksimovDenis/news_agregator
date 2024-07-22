@@ -8,7 +8,6 @@ import (
 	"skillfactory/news_agregator/internal/api"
 	"skillfactory/news_agregator/internal/config"
 	"skillfactory/news_agregator/internal/repository"
-	"skillfactory/news_agregator/pkg/rss"
 	"syscall"
 
 	"github.com/rs/zerolog"
@@ -28,8 +27,6 @@ func main() {
 	}
 
 	logger := zerolog.New(os.Stdout).Level(logLevel).With().Timestamp().Logger()
-
-	rss.Parse("https://habr.com/ru/rss/hub/go/all/?fl=ru")
 
 	ctx := context.Background()
 

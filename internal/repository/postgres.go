@@ -11,6 +11,7 @@ func NewPostgres(ctx context.Context, pgConnString string, log zerolog.Logger) (
 	db, err := pgxpool.Connect(ctx, pgConnString)
 	if err != nil {
 		log.Error().Err(err).Msg("failed to init postgres connection")
+		log.Error().Msg("!" + pgConnString + "!")
 		return nil, err
 	}
 

@@ -1,19 +1,27 @@
 package config
 
-import "github.com/kelseyhightower/envconfig"
+import (
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
-	APIPort      int    `default:"8080"`
+	APIPort      string `default:"8080"`
 	PgConnString string `default:"postgres://admin:admin@localhost:5432/newsAgregator?sslmode=disable"`
 	LogLevel     string `default:"debug"`
 }
 
-// InitConfig init config
 func InitConfig() (*Config, error) {
 	var cnf Config
-	err := envconfig.Process("SKILLFACTORY", &cnf)
-	if err != nil {
+
+	if err := godotenv.Load(); err != nil {
 		return nil, err
+	}
+
+	cnf = Config{
+		APIPort:      os.Getenv("SERVER_PORT"),
+		PgConnString: os.Getenv("PG_DSN"),
 	}
 
 	return &cnf, nil
