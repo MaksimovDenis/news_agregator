@@ -9,11 +9,9 @@ import (
 	"github.com/rs/zerolog"
 )
 
-//go:generate mockgen -source=repository.go -destination=mocks/mock.go
-
 type Feeds interface {
-	StoreFeeds(feeds []models.Feeds) error
-	Feeds(limit int) (feeds []models.Feeds, err error)
+	StoreFeeds(feeds []models.Feeds) error             //Save news to storage
+	Feeds(limit int) (feeds []models.Feeds, err error) //Get news from storge
 }
 
 type Repository struct {

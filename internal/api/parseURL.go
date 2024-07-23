@@ -2,11 +2,12 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"skillfactory/news_agregator/internal/models"
 	"skillfactory/news_agregator/pkg/rss"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type configRss struct {
@@ -56,7 +57,7 @@ func parseURL(url string, feeds chan<- []models.Feeds, errs chan<- error, period
 		select {
 		case <-ticker.C:
 			news, err := rss.Parse(url)
-			fmt.Printf("Полчены новости по ссылке %v\n", url)
+			log.Printf("Полчены новости по ссылке %v\n", url)
 			if err != nil {
 				errs <- err
 				continue

@@ -29,6 +29,7 @@ type Item struct {
 	Link        string `xml:"link"`
 }
 
+// Parse links from config.JSON (./cmd)
 func Parse(url string) ([]models.Feeds, error) {
 	resp, err := http.Get(url)
 	if err != nil {
