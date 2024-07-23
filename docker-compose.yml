@@ -1,29 +1,14 @@
 version: '3.8'
 
+volumes:
+  postgres_volume:
+
 services:
-  news_agregator:
-    build: ./
-    restart: on-failure
+  pg-local:
+    image: postgres:14-alpine3.17
+    env_file:
+      - .env
     ports:
-      - 8080:8080
-    depends_on:
-      - db
-    environment:
-      - PG_DSN=postgres://admin:admin@pg-local:5432/newsAgregator?sslmode=disable
-    networks:
-      - mynetwork
-
-  db:
-    restart: always
-    image: postgres:latest
+      - "5432:5432"
     volumes:
-      - ./database/postgres/data:/var/lib/postgresql/data
-    environment:
-      - PG_DSN=postgres://admin:admin@pg-local:5432/newsAgregator?sslmode=disable
-    ports:
-      - 5432:5432
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
+      - postgres_volume:/var/lib/postgresql/data
